@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<canvas id="myCanvas" width="1200" height="1200"></canvas>
+
+<script>
+
+// When true, moving the mouse draws on the canvas
+let isDrawing = false;
+let x = 0;
+let y = 0;
+
+	
+var canvas = document.getElementById("myCanvas");
+var context = canvas.getContext("2d");
+
+
+function point(x, y, canvas){
+  canvas.fillRect(x,y,10,1);
+}
+// event.offsetX, event.offsetY gives the (x,y) offset from the edge of the canvas.
+
+// Add the event listeners for mousedown, mousemove, and mouseup
+canvas.addEventListener('mousedown', e => {
+  x = e.offsetX;
+  y = e.offsetY;
+  isDrawing = true;
+});
+
+canvas.addEventListener('mousemove', e => {
+  if (isDrawing === true) {
+    drawLine(context, x, y, e.offsetX, e.offsetY);
+    x = e.offsetX;
+    y = e.offsetY;
+  }
+});
+
+window.addEventListener('mouseup', e => {
+  if (isDrawing === true) {
+    drawLine(context, x, y, e.offsetX, e.offsetY);
+    x = 0;
+    y = 0;
+    isDrawing = false;
+  }
+});
+
+function drawLine(context, x1, y1, x2, y2) {
+  context.beginPath();
+  context.strokeStyle = 'black';
+  context.lineWidth = 1;
+  context.moveTo(x1, y1);
+  context.lineTo(x2, y2);
+  context.stroke();
+  context.closePath();
+}
+
+ // cada vez que muevo el mouse se dispara el evento. La fx que se va a ejecutar (oyente de ese evento (evt)) será una fx anonima
+	canvas.addEventListener( "mousemove", function(evt){
+			  getMousePos(evt);
+			});
+
+//definimos la fx getMousePos - devuelve un objeto que contenga las posiciones x e y. Los atributos ClientX y ClientY devuelven una posicion del puntero en un instante determinado
+		function getMousePos(evt){
+			var x = evt.clientX;
+	 		var y = evt.clientY;
+	 		var coor = "Coordinates: (" + x + "," + y + ")";
+			console.log(coor); 	//imprimir en la consola el mensaje
+		};
+</script>
+
+</html>
+
